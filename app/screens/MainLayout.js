@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 import MainView from './MainView';
 import SignIn from './SignIn';
 
-const MainLayout = (props) => {
-  // if (userIsLoggedIn) {
-  if (false) {
-    return <MainView {...props} />;
+class MainLayout extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      jwt: '',
+    };
   }
-  return <SignIn {...props} />;
-};
+
+  render() {
+    const jwt = this.state;
+    if (!jwt) {
+      return (
+        <SignIn {...this.props} />
+      );
+    }
+    return (
+      <MainView {...this.props} />
+    );
+  }
+}
 
 export default MainLayout;

@@ -4,6 +4,7 @@ import { Card, Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Container from '../components/Container';
 import connectAlert from '../components/Alert/connectAlert';
+import deviceStorage from './../services/deviceStorage';
 
 class SignIn extends Component {
   constructor(props) {
@@ -36,7 +37,8 @@ class SignIn extends Component {
     }
 
     this.setState({ loading: !loading });
-    return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
+    // return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
+    deviceStorage.saveItem('userToken', 'jwttoken123');
   }
 
   /*
