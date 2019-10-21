@@ -26,3 +26,5 @@ class AuthLoadingScreen extends Component {
     );
   }
 }
+
+export default AuthLoadingScreen;

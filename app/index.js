@@ -6,7 +6,7 @@ import AppContainer from './config/routes';
 const App = () => {
   return (
     <AlertProvider>
-      <MainLayout />
+      <AppContainer />
     </AlertProvider>
   );
 };
