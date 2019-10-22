@@ -39,6 +39,7 @@ class SignIn extends Component {
     this.setState({ loading: !loading });
     // return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
     deviceStorage.saveItem('userToken', 'jwttoken123');
+    this.props.navigation.navigate('App');
   }
 
   /*
