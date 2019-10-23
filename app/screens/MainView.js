@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, Button, AsyncStorage } from 'react-native';
+import deviceStorage from './../services/deviceStorage';
 
 class MainView extends Component {
   _signOutAsync = async () => {
-    await AsyncStorage.clear();
+    deviceStorage.clearStorage();
     this.props.navigation.navigate('Auth');
   }
 

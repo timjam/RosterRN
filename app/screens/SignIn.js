@@ -36,6 +36,7 @@ class SignIn extends Component {
       return this.props.alertWithType('error', 'Error', 'Password is required');
     }
 
+    // TODO: Get the token from back end
     this.setState({ loading: !loading });
     // return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
     deviceStorage.saveItem('userToken', 'jwttoken123');
