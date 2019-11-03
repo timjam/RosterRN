@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
+import { Card, Input, Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
+import Container from '../components/Container';
 
 class Register extends Component {
   constructor(props) {
@@ -12,16 +15,7 @@ class Register extends Component {
       password: '',
       confirmPassword: '',
       loading: false,
-      error: '',
     };
-  }
-
-  registerWithFacebook = () => {
-    return this.props.alertWithType('error', 'Error', 'Facebook registration not implemented yet');
-  }
-
-  registerWithGoogle = () => {
-    return this.props.alertWithType('error', 'Error', 'Google registration not implemented yet');
   }
 
   // Fix eslint/babel issue and transform this to async await
@@ -42,23 +36,68 @@ class Register extends Component {
       return this.props.alertWithType('error', 'Error', 'Email not valid');
     }
 
-    this.setState({ error: '', loading: true });
-
     deviceStorage.saveItem('id_token', 'jwttoken123');
-    // post(BASE_URL+/api/v1/signup, {
-    //   user: {
-    //     email,
-    //     password,
-    //     confirmPassword,
-    //   },
-    // }).then((response) => {
-    //   // Handle jwt response here
-    //   deviceStorage.saveItem('id_token', response.jwttoken);
-    // }).catch((error) => {
-    //   // Handle errors here
-    //   // if (error === certainType)
-    //   return this.props.alertWithType('error', 'Error', 'Registration failed. Please try again. If this keeps happening, please contact mofo@mofo.fu');
-    // });
+    this.props.navigation.navigate('App');
+  }
+  render() {
+    return (
+      <Container scroll>
+        <Card>
+          <Input
+            label="Email or Username"
+            placeholder="Enter email or username"
+            keyboardType="email-address"
+            onChangeText={(email) => this.setState({ email })}
+            value={this.state.email}
+            leftIcon={
+              <Icon
+                name="envelope"
+                size={20}
+              />
+            }
+          />
+          <Input
+            label="Password"
+            placeholder="Enter password"
+            secureTextEntry
+            onChangeText={(password) => this.setState({ password })}
+            value={this.state.password}
+            leftIcon={
+              <Icon
+                name="lock"
+                size={20}
+              />
+            }
+          />
+          <Input
+            label="ConfirmPassword"
+            placeholder="Repeat password"
+            secureTextEntry
+            onChangeText={(confirmPassword) => this.setState({ confirmPassword })}
+            value={this.state.confirmPassword}
+            leftIcon={
+              <Icon
+                name="lock"
+                size={20}
+              />
+            }
+          />
+          <Button
+            title="Sign Up"
+            iconRight
+            icon={
+              <Icon
+                name="arrow-right"
+                size={20}
+                color="white"
+              />
+            }
+            onPress={this.registerUser}
+            loading={this.state.loading}
+          />
+        </Card>
+      </Container>
+    );
   }
 }
 

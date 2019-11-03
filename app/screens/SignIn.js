@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Container from './../components/Container';
 import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
-import { LinkText } from './../components/Text/';
+import { LinkText } from './../components/Text';
 
 class SignIn extends Component {
   constructor(props) {
@@ -19,6 +19,9 @@ class SignIn extends Component {
     };
   }
 
+  goToSignUp = () => {
+    this.props.navigation.navigate('SignUp');
+  }
   signIn = () => {
     const { emailOrUsername, password, loading } = this.state;
 
@@ -86,11 +89,13 @@ class SignIn extends Component {
             onPress={this.signIn}
             loading={this.state.loading}
           />
+          <Text>No account yet?</Text>
+          <LinkText
+            onPress={this.goToSignUp}
+          >
+          Sign Up instead!
+          </LinkText>
         </Card>
-        <Text>No account yet?</Text>
-        <LinkText>
-        Sign Up instead!
-        </LinkText>
       </Container>
     );
   }

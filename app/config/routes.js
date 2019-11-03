@@ -8,7 +8,7 @@ import MainView from './../screens/MainView';
 
 const AuthStack = createStackNavigator({
   LogIn: SignIn,
-  Registration: Register,
+  SignUp: Register,
 }, {
   headerMode: 'screen',
 });
