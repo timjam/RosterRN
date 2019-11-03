@@ -11,7 +11,7 @@ class MainView extends Component {
   render() {
     return (
       <View>
-        <Text>Päänäkymä</Text>
+        <Text>Main view. Just a placeholder screen</Text>
         <Button
           title="Sign out"
           onPress={this._signOutAsync}

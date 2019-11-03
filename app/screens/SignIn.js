@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Text } from 'react-native';
 import { PropTypes } from 'prop-types';
 import { Card, Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Container from '../components/Container';
-import connectAlert from '../components/Alert/connectAlert';
+import Container from './../components/Container';
+import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
+import { LinkText } from './../components/Text/';
 
 class SignIn extends Component {
   constructor(props) {
@@ -15,14 +17,6 @@ class SignIn extends Component {
       password: '',
       loading: false,
     };
-  }
-
-  loginWithFacebook = () => {
-    return this.props.alertWithType('success', 'Error', 'Facebook log in not implemented yet');
-  }
-
-  loginWithGoogle = () => {
-    return this.props.alertWithType('info', 'Error', 'Google log in not implemented yet');
   }
 
   signIn = () => {
@@ -92,21 +86,11 @@ class SignIn extends Component {
             onPress={this.signIn}
             loading={this.state.loading}
           />
-          <Icon.Button
-            name="google"
-            backgroundColor="#000000"
-            onPress={this.loginWithGoogle}
-          >
-            Sign in with Google
-          </Icon.Button>
-          <Icon.Button
-            name="facebook"
-            backgroundColor="#3b5998"
-            onPress={this.loginWithFacebook}
-          >
-            Login with Facebook
-          </Icon.Button>
         </Card>
+        <Text>No account yet?</Text>
+        <LinkText>
+        Sign Up instead!
+        </LinkText>
       </Container>
     );
   }
