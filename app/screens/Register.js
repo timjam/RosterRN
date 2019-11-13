@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
 import Container from '../components/Container';
+import connection from './../config/connection';
 
 class Register extends Component {
   constructor(props) {
@@ -19,7 +20,7 @@ class Register extends Component {
   }
 
   // Fix eslint/babel issue and transform this to async await
-  registerUser = () => {
+  registerUser = async () => {
     const { email, password, confirmPassword } = this.state;
 
     if (email.length === 0) {
@@ -36,8 +37,27 @@ class Register extends Component {
       return this.props.alertWithType('error', 'Error', 'Email not valid');
     }
 
-    deviceStorage.saveItem('id_token', 'jwttoken123');
-    this.props.navigation.navigate('App');
+    try {
+      const URL = `${connection.SERVER_URL}:4500/user/signup`;
+      console.log(URL);
+      const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      console.log(response);
+      // deviceStorage.saveItem('id_token', response.data.jwt);
+      // this.props.navigation.navigate('App');6
+    } catch (error) {
+      console.log(error);
+      return this.props.alertWithType('error', 'Error', `Something went wrong: ${error}`);
+    }
   }
   render() {
     return (
