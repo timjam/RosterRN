@@ -11,6 +11,7 @@ const AuthStack = createStackNavigator({
   SignUp: Register,
 }, {
   headerMode: 'screen',
+  initialRouteName: 'LogIn',
 });
 
 const AppContainer = createAppContainer(createSwitchNavigator(

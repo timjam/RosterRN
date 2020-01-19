@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { PropTypes } from 'prop-types';
@@ -7,13 +8,14 @@ import Container from './../components/Container';
 import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
 import { LinkText } from './../components/Text';
+import postJSONContent from './../services/connectionService';
 
 class SignIn extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      emailOrUsername: '',
+      username: '',
       password: '',
       loading: false,
     };
@@ -22,10 +24,10 @@ class SignIn extends Component {
   goToSignUp = () => {
     this.props.navigation.navigate('SignUp');
   }
-  signIn = () => {
-    const { emailOrUsername, password, loading } = this.state;
+  signIn = async () => {
+    const { username, password, loading } = this.state;
 
-    if (emailOrUsername.length === 0) {
+    if (username.length === 0) {
       return this.props.alertWithType('error', 'Error', 'Email or username is required');
     }
 
@@ -36,8 +38,19 @@ class SignIn extends Component {
     // TODO: Get the token from back end
     this.setState({ loading: !loading });
     // return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
-    deviceStorage.saveItem('userToken', 'jwttoken123');
-    this.props.navigation.navigate('App');
+    try {
+      const URL = `${connection.SERVER_URL}:4500/user/signup`;
+      const response = await fetch(URL, postJSONContent({
+        username,
+        password,
+      }));
+      const data = await response.json();
+      deviceStorage.saveItem('userToken', data.jwt);
+      this.props.navigation.navigate('App');
+    } catch (error) {
+      // TODO: Get errortype from server. Adjust error message accordingly
+      return this.props.alertWithType('Error', 'errortype', 'Could not sign in');
+    }
   }
 
   /*
@@ -54,8 +67,8 @@ class SignIn extends Component {
             label="Email or Username"
             placeholder="Enter email or username"
             keyboardType="email-address"
-            onChangeText={(emailOrUsername) => this.setState({ emailOrUsername })}
-            value={this.state.emailOrUsername}
+            onChangeText={(username) => this.setState({ username })}
+            value={this.state.username}
             leftIcon={
               <Icon
                 name="envelope"

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Card, Input, Button } from 'react-native-elements';
@@ -6,6 +7,7 @@ import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
 import Container from '../components/Container';
 import connection from './../config/connection';
+import postJSONContent from './../services/connectionService';
 
 class Register extends Component {
   constructor(props) {
@@ -32,6 +34,7 @@ class Register extends Component {
     }
 
     // Move validation to custom input out from this submit function
+    // so that the input is validated while it is written
     const emailReg = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$', 'g');
     if (!emailReg.test(email)) {
       return this.props.alertWithType('error', 'Error', 'Email not valid');
@@ -39,21 +42,15 @@ class Register extends Component {
 
     try {
       const URL = `${connection.SERVER_URL}:4500/user/signup`;
-      console.log(URL);
-      const response = await fetch(URL, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-      console.log(response);
-      // deviceStorage.saveItem('id_token', response.data.jwt);
-      // this.props.navigation.navigate('App');6
+      const response = await fetch(URL, postJSONContent({
+        username: email,
+        password,
+      }));
+      const data = await response.json();
+      // deviceStorage.saveItem('id_token', data.jwt);
+      // Route back to sign-in screen for now. Later on succesful
+      // registration sign user automatically in.
+      this.props.navigation.navigate('LogIn');
     } catch (error) {
       console.log(error);
       return this.props.alertWithType('error', 'Error', `Something went wrong: ${error}`);
