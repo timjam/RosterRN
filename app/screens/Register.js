@@ -47,7 +47,7 @@ class Register extends Component {
         password,
       }));
       const data = await response.json();
-      // deviceStorage.saveItem('id_token', data.jwt);
+      deviceStorage.saveItem('id_token', data.jwt);
       // Route back to sign-in screen for now. Later on succesful
       // registration sign user automatically in.
       this.props.navigation.navigate('LogIn');

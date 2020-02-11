@@ -9,6 +9,8 @@ import connectAlert from './../components/Alert/connectAlert';
 import deviceStorage from './../services/deviceStorage';
 import { LinkText } from './../components/Text';
 import postJSONContent from './../services/connectionService';
+import connection from './../config/connection';
+import apiService from './../services/apiService';
 
 class SignIn extends Component {
   constructor(props) {
@@ -36,11 +38,11 @@ class SignIn extends Component {
     }
 
     // TODO: Get the token from back end
-    this.setState({ loading: !loading });
+    this.setState({ loading: true });
     // return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
     try {
-      const URL = `${connection.SERVER_URL}:4500/user/signup`;
-      const response = await fetch(URL, postJSONContent({
+      const URL = `${connection.SERVER_URL}:4500/user/signin`;
+      const response = await apiService.post(URL, postJSONContent({
         username,
         password,
       }));
@@ -49,7 +51,9 @@ class SignIn extends Component {
       this.props.navigation.navigate('App');
     } catch (error) {
       // TODO: Get errortype from server. Adjust error message accordingly
-      return this.props.alertWithType('Error', 'errortype', 'Could not sign in');
+      console.log(error);
+      this.setState({ loading: false });
+      return this.props.alertWithType('error', 'Error', `Sign in failed - ${error.message}`);
     }
   }
 
