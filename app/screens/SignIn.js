@@ -27,7 +27,7 @@ class SignIn extends Component {
     this.props.navigation.navigate('SignUp');
   }
   signIn = async () => {
-    const { username, password, loading } = this.state;
+    const { username, password } = this.state;
 
     if (username.length === 0) {
       return this.props.alertWithType('error', 'Error', 'Email or username is required');
@@ -37,9 +37,7 @@ class SignIn extends Component {
       return this.props.alertWithType('error', 'Error', 'Password is required');
     }
 
-    // TODO: Get the token from back end
     this.setState({ loading: true });
-    // return this.props.alertWithType('warn', 'Warning', 'Sign in not implemented yet');
     try {
       const URL = `${connection.SERVER_URL}:4500/user/signin`;
       const response = await apiService.post(URL, postJSONContent({
@@ -47,11 +45,11 @@ class SignIn extends Component {
         password,
       }));
       const data = await response.json();
-      deviceStorage.saveItem('userToken', data.jwt);
-      this.props.navigation.navigate('App');
+      if (data) {
+        deviceStorage.saveItem('userToken', data.jwt);
+        this.props.navigation.navigate('App');
+      }
     } catch (error) {
-      // TODO: Get errortype from server. Adjust error message accordingly
-      console.log(error);
       this.setState({ loading: false });
       return this.props.alertWithType('error', 'Error', `Sign in failed - ${error.message}`);
     }
